@@ -1,0 +1,108 @@
+*differ.txt*	Git changes, history and diffs in their own tab
+
+==============================================================================
+CONTENTS						*differ*
+
+Differ opens a separate tabpage with three parts: a main pane showing diffs,
+a sidebar with Changes and History tabs, and a commit box. Everything is an
+ordinary window, so your global maps such as <C-h> keep working. Differ's keys
+are buffer-local to its own windows.
+
+Press |g?| in any Differ window, or run |:Differ-help|, for a list of the keys
+as you have them configured.
+
+==============================================================================
+COMMANDS						*:Differ*
+
+:Differ			Open the view, or close it if you're already in it.
+:Differ open		Open or focus the view.
+:Differ close		Close the view.
+:Differ refresh		Re-read the repository and re-render.
+:Differ history		Open the commit graph.
+:Differ history {file}	Commit graph limited to {file}. Use % for the current
+			file.
+:Differ help						*:Differ-help*
+			Show the key cheatsheet. Works without an open view.
+
+==============================================================================
+KEYS							*differ-keys*
+
+These are the defaults. See |differ-config| to change them.
+
+Everywhere ~
+  gh		Switch between Changes and History, and focus the sidebar
+  gS		Unified / side by side
+  gC		Jump to the commit box
+  R		Refresh
+  g?		Help (also ? in the sidebar)
+  q		Close
+
+Diff (main pane) ~
+  ]c  [c	Next / previous hunk
+  ]f  [f  L  H	Next / previous file
+  -		Stage or unstage the hunk; in Visual mode, the selected lines
+  X		Restore the hunk or selected lines to HEAD (asks first)
+  <Tab>		Collapse or expand the file
+  <CR>		Open the file at this line; on a hidden-lines row, reveal them
+  gA  gR	Stage all / unstage all
+  gW		Toggle line wrap
+  :w		Write edits back to their files
+
+Changes tab ~
+  <CR>		Show the file; on a section, fold it
+  -		Toggle stage (also on a Visual selection)
+  s  u		Stage / unstage
+  X		Discard changes (asks first; new files get deleted)
+  a  A		Stage all / unstage all
+  <Tab>		Fold section
+  c		Write a commit message
+  p  P  f	Pull (fast-forward only) / push / fetch
+  H  L		Switch to History
+
+History tab ~
+  <CR>		Show the commit
+  <Tab>		List the commit's files under it
+  a		Current branch / all branches
+  y		Yank the commit hash
+  H  L		Switch to Changes
+
+Commit box ~
+  <C-s> <C-CR> :w	Commit
+  <M-a>			Toggle amend
+
+Tabs, toolbar buttons, stage buttons, checkboxes and chevrons are clickable.
+
+==============================================================================
+EDITING IN THE DIFF					*differ-editing*
+
+Added and context lines are real text. Edit them as usual and `:w` writes each
+changed file. Removed lines and headers are protected: typing on one gives
+|E21|, and a change that spans one (such as `dG`) is undone as a whole.
+
+You can undo while editing, but not past a `:w`, a stage or a refresh, because
+those re-render the buffer. Staging and restoring are refused while you have
+unsaved edits.
+
+`:w` skips a file that changed on disk since it was shown, or that has unsaved
+changes in another buffer, and warns you.
+
+==============================================================================
+CONFIGURATION						*differ-config*
+
+Optional. Call `require("differ").setup()` with any of these (defaults shown):
+>lua
+    require("differ").setup({
+      sidebar = { position = "right", width = 46 },
+      mode = "unified",        -- or "split"
+      context = 3,             -- unchanged lines around each hunk
+      follow = true,           -- moving in the sidebar previews in the main pane
+      poll_ms = 3000,          -- re-check git while focused; 0 disables
+      confirm_restore = true,
+      history = { page = 200, all = false, max_lanes = 8 },
+    })
+<
+Keys live under `keys`, grouped as `common`, `stream`, `changes`, `history` and
+`commit`. Set one to false to leave it unmapped. `lua/differ/config.lua` lists
+them all.
+
+ vim:tw=78:ts=8:ft=help:norl:

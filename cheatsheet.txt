@@ -1,0 +1,48 @@
+# Picked up by cheatsheet.nvim's :Cheatsheet. Also readable on its own.
+# Shows the default keys. Inside Differ, g? shows your configured ones.
+
+## differ @git @diff
+Open or close Differ                              | :Differ
+Open the commit graph                             | :Differ history
+History of the current file                       | :Differ history %
+Show this list inside nvim                        | :Differ help
+Switch between Changes and History                | gh
+Unified / side by side                            | gS
+Jump to the commit box                            | gC
+Refresh                                           | R
+Help for the current config                       | g?
+Help (in the sidebar)                             | ?
+Close                                             | q
+
+## differ-diff @git @diff
+Next / previous hunk                              | ]c  [c
+Next / previous file                              | ]f  [f  L  H
+Stage or unstage hunk or selected lines           | -
+Restore hunk or selected lines to HEAD            | X
+Collapse or expand file                           | <Tab>
+Open file at this line, or reveal hidden lines    | <CR>
+Stage all / unstage all                           | gA  gR
+Toggle line wrap                                  | gW
+Write edits back to their files                   | :w
+
+## differ-changes @git @diff
+Show file, or fold a section                      | <CR>
+Toggle stage (also on a visual selection)         | -
+Stage / unstage                                   | s  u
+Discard changes (asks first)                      | X
+Stage all / unstage all                           | a  A
+Fold section                                      | <Tab>
+Write a commit message                            | c
+Pull (fast-forward only) / push / fetch           | p  P  f
+Switch to History                                 | H  L
+
+## differ-history @git @diff
+Show commit                                       | <CR>
+List the commit's files under it                  | <Tab>
+Current branch / all branches                     | a
+Yank commit hash                                  | y
+Switch to Changes                                 | H  L
+
+## differ-commit @git @diff
+Commit                                            | <C-s>  <C-CR>  :w
+Toggle amend                                      | <M-a>
